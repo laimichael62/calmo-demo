@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-MO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F1EDE6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CALMO 會員">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22CALMO%20%E6%9C%83%E5%93%A1%22%2C%22short_name%22%3A%22CALMO%22%2C%22start_url%22%3A%22.%2Fmobile.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F1EDE6%22%2C%22theme_color%22%3A%22%23F1EDE6%22%7D">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>CALMO 會員卡</title>
+<style>
+:root{--paper:#F1EDE6;--card:#FBF9F5;--ink:#2A2826;--mute:#8C857C;--line:#DDD5C9;--wood:#D8C8B0;--ok:#5E7A5A;--warn:#B5693B}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%}
+body{font-family:"Helvetica Neue",Arial,"PingFang TC","Noto Sans TC",sans-serif;background:var(--paper);color:var(--ink);max-width:480px;margin:0 auto;position:relative;overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+header{padding:calc(14px + env(safe-area-inset-top)) 20px 6px;display:flex;justify-content:space-between;align-items:center}
+.logo{letter-spacing:.38em;font-weight:500;font-size:18px}.note{font-size:12px;color:var(--mute)}
+.ex{font-size:10px;padding:2px 7px;border-radius:6px;background:var(--warn);color:#fff}
+.wrap{padding:8px 18px 100px}
+.cardm{position:relative;overflow:hidden;border-radius:22px;padding:22px;background:linear-gradient(135deg,#2A2826,#4A433B);color:#F1EDE6;box-shadow:0 14px 30px rgba(42,40,38,.25)}
+.cardm .c{position:absolute;right:-30px;top:-70px;font:italic 260px/1 "Snell Roundhand","Brush Script MT",cursive;color:rgba(241,237,230,.08)}
+.cardm .nm{font-size:13px;letter-spacing:.2em;opacity:.8}.cardm .bal{font-size:38px;font-weight:600;margin:12px 0 2px;font-variant-numeric:tabular-nums}
+.cardm .sub{font-size:12px;opacity:.75}
+.qr{background:var(--card);border:1px solid var(--line);border-radius:20px;margin:16px 0;padding:18px;text-align:center}
+.qr svg{width:180px;height:180px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{background:var(--ink);color:#fff;border-radius:14px;padding:14px;font-size:15px;width:100%}.btn.ghost{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+h3{margin:22px 0 8px;font-size:16px}
+.hist{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.h{display:flex;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}.h:last-child{border:0}
+.h .a{font-variant-numeric:tabular-nums;font-weight:600}.h .a.p{color:var(--ok)}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(251,249,245,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mute)}nav button.on{color:var(--ink)}nav svg{width:22px;height:22px}
+.sheet{position:fixed;inset:0;background:rgba(42,40,38,.4);display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
+.sh{background:var(--paper);width:100%;max-width:480px;margin:0 auto;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.tier{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card);text-align:center}.tier.on{border:2px solid var(--ink)}.tier b{display:block;font-size:20px}.tier span{font-size:12px;color:var(--ok)}
+.pm{display:flex;gap:8px;margin-bottom:14px}.pm button{flex:1;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:13px}.pm button.on{background:var(--ink);color:#fff}
+.tab{display:none}.tab.on{display:block}
+.mi{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:30px;font-size:14px;opacity:0;transition:.3s;z-index:20;white-space:nowrap}.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header><div class="logo">CALMO</div><span class="ex">顧客端 · 示例</span></header>
+<div class="wrap">
+ <section class="tab on" id="t-card">
+  <div class="cardm"><div class="c">C</div><div class="nm">MEMBER · 陳小姐</div><div class="bal" id="bal"></div><div class="sub" id="split"></div><div class="sub" style="margin-top:14px">+853 6612 3456 · 會員編號 CM-000001</div></div>
+  <div class="qr"><div id="qr"></div><div class="note" style="margin-top:6px">結帳時出示此碼，店員掃碼扣款<br>動態碼每 60 秒更新 · <span id="cd">60</span>s（示意圖形，非真實 QR）</div></div>
+  <div class="row"><button class="btn" onclick="openTop()">充值</button><button class="btn ghost" onclick="tab('hist')">交易紀錄</button></div>
+  <h3>最近交易</h3><div class="hist" id="recent"></div>
+ </section>
+ <section class="tab" id="t-hist"><h3 style="margin-top:6px">全部交易紀錄</h3><div class="hist" id="all"></div><p class="note">本金與贈送分開顯示；退款只退未使用本金（條款待確認）。</p></section>
+ <section class="tab" id="t-menu"><h3 style="margin-top:6px">餐牌</h3><p class="note">任點開放式酸種麵包 ＋ 飲品，飲品（連加配）半價</p><div id="menu"></div></section>
+ <section class="tab" id="t-terms"><h3 style="margin-top:6px">儲值條款（草擬，待律師確認）</h3><ol class="note" style="font-size:13px;line-height:1.8;padding-left:18px">
+  <li>儲值金只限於 CALMO 門店消費，不可提現、轉讓或兌換現金。</li><li>贈送金額屬優惠，不設退款。</li><li>單一會員儲值餘額上限 MOP 3,000（示例）。</li><li>如需退款，只退回未使用的本金餘額。</li><li>個人資料只用於會員服務，詳見私隱政策。</li></ol></section>
+</div>
+<nav>
+ <button class="on" data-t="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>會員卡</button>
+ <button data-t="hist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>紀錄</button>
+ <button data-t="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>餐牌</button>
+ <button data-t="terms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>條款</button>
+</nav>
+<div class="sheet" id="sheet" onclick="if(event.target===this)this.classList.remove('on')"><div class="sh">
+ <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:18px">儲值充值</b><button onclick="sheet.classList.remove('on')" style="font-size:24px;color:var(--mute)">×</button></div>
+ <div class="tiers" id="tiers"></div>
+ <div class="pm" id="pm"><button class="on">MPay</button><button>BOC Pay</button><button>銀行卡</button></div>
+ <div class="note" id="tsum" style="margin-bottom:12px"></div>
+ <button class="btn" onclick="doTop()">前往付款（模擬）</button></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),sheet=$('#sheet');
+const TIERS=[{pay:300,bonus:20},{pay:500,bonus:50},{pay:1000,bonus:120},{pay:2000,bonus:300}];let tier=1,pm='MPay';
+const me={p:363.6,b:42.4,hist:[
+ {t:'今日 10:02',d:'消費 #0004 黑松露炒滑蛋＋海鹽焦糖拿鐵（半價）',p:-55.9,b:-8.1},
+ {t:'昨日 09:40',d:'充值 MOP 500（MPay）',p:500,b:0},{t:'昨日 09:40',d:'充值贈送',p:0,b:50},
+ {t:'10/03 13:10',d:'消費 澳白',p:-33.3,b:-4.7},{t:'9/20 13:00',d:'消費 意式火腿＋卡慕（半價）',p:-58.4,b:-8.1},
+ {t:'9/12 10:05',d:'充值 MOP 1000（銀行卡）',p:1000,b:0},{t:'9/12 10:05',d:'充值贈送',p:0,b:120}]};
+const fmt=v=>'MOP '+v.toLocaleString('en',{minimumFractionDigits:v%1?1:0,maximumFractionDigits:1});
+function render(){$('#bal').textContent=fmt(me.p+me.b);$('#split').textContent=`本金 ${fmt(me.p)} ＋ 贈送 ${fmt(me.b)}`;
+ const h=x=>`<div class="h"><div>${x.d}<div class="note">${x.t}</div></div><div class="a ${x.p+x.b>0?'p':''}">${x.p+x.b>0?'+':''}${fmt(x.p+x.b).replace('MOP -','−MOP ')}</div></div>`;
+ $('#recent').innerHTML=me.hist.slice(0,3).map(h).join('');$('#all').innerHTML=me.hist.map(h).join('')}
+function qr(seed){let s=seed,r=()=>(s=(s*9301+49297)%233280)/233280;const n=25,z=7;let q='';
+ const finder=(x,y)=>`<rect x="${x}" y="${y}" width="${z*7}" height="${z*7}" fill="#2A2826"/><rect x="${x+z}" y="${y+z}" width="${z*5}" height="${z*5}" fill="#fff"/><rect x="${x+2*z}" y="${y+2*z}" width="${z*3}" height="${z*3}" fill="#2A2826"/>`;
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){const inF=(i<8&&j<8)||(i<8&&j>n-9)||(i>n-9&&j<8);if(!inF&&r()>.52)q+=`<rect x="${i*z}" y="${j*z}" width="${z}" height="${z}" fill="#2A2826"/>`}
+ $('#qr').innerHTML=`<svg viewBox="-7 -7 189 189"><rect x="-7" y="-7" width="189" height="189" fill="#fff" rx="8"/>${q}${finder(0,0)}${finder((n-7)*z,0)}${finder(0,(n-7)*z)}</svg>`}
+let cd=60,seed=42;qr(seed);setInterval(()=>{if(--cd<=0){cd=60;qr(++seed)}$('#cd').textContent=cd},1000);
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+function tab(t){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==t));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.id=='t-'+t));window.scrollTo(0,0)}
+function openTop(){sheet.classList.add('on');rT()}
+function rT(){$('#tiers').innerHTML=TIERS.map((t,i)=>`<button class="tier ${i==tier?'on':''}" onclick="tier=${i};rT()"><b>MOP ${t.pay}</b><span>送 MOP ${t.bonus}（示例）</span></button>`).join('');const t=TIERS[tier];$('#tsum').textContent=`付款 MOP ${t.pay}，入帳 MOP ${t.pay+t.bonus}（本金 ${t.pay}＋贈送 ${t.bonus}）`}
+document.querySelectorAll('#pm button').forEach(b=>b.onclick=()=>{pm=b.textContent;document.querySelectorAll('#pm button').forEach(x=>x.classList.toggle('on',x==b))});
+function doTop(){const t=TIERS[tier];me.p+=t.pay;me.b+=t.bonus;me.hist.unshift({t:'剛剛',d:'充值贈送',p:0,b:t.bonus},{t:'剛剛',d:`充值 MOP ${t.pay}（${pm}）`,p:t.pay,b:0});me.hist.unshift(me.hist.splice(1,1)[0]);sheet.classList.remove('on');render();const el=$('#toast');el.textContent='充值成功 · 餘額 '+fmt(me.p+me.b);el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2000)}
+const MENU=[['經典咖啡','濃縮 23 · 美式 28/32 · 拿鐵 33/38 · 澳白 38 · 摩卡 33/38 · 卡布奇諾 35'],['拿鐵系列','短笛 36 · 米乳拿鐵 36/41 · 榛子／海鹽焦糖／玫瑰／香草／黑糖 38/43'],['特調咖啡','蘋果／香橙／檸檬／流沙美式 凍 40 · 維也納 43 · 米奶髒咖啡 36'],['冷萃系列','082 · 083 凍 42'],['獨家飲品','卡慕 43 · 焙雪 45 · 雲滴 43 · 霧抹 43 · 茉冰 45'],['無咖啡飲品','梳打 38 · 焙茶鮮奶 39/45 · 抹茶鮮奶 39/45 · 草莓抹茶 42/48 …'],['開放式酸種麵包','MOP 32 – 55（14 款）'],['甜品','巴斯克 34–42 · 熔岩芝士 38 · 曲奇 18']];
+$('#menu').innerHTML=MENU.map(([a,b])=>`<div class="mi"><b>${a}</b><span class="note" style="text-align:right;max-width:62%">${b}</span></div>`).join('');
+render();
+</script>
+</body></html>

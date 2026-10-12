@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-MO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2A2826">
+<title>CALMO 演示</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100dvh; display: grid; place-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+    background: #f4f0ea; color: #2a2826; padding: 24px;
+  }
+  .card {
+    width: min(440px, 100%); background: #fff; border-radius: 20px;
+    padding: 28px 24px; box-shadow: 0 12px 40px rgba(42,40,38,.08);
+  }
+  h1 { margin: 0 0 6px; font-size: 1.4rem; letter-spacing: .02em; }
+  p { margin: 0 0 20px; color: #6b6560; line-height: 1.55; font-size: .95rem; }
+  a.btn {
+    display: block; text-decoration: none; color: #fff; background: #2a2826;
+    border-radius: 14px; padding: 16px 18px; margin: 0 0 10px;
+    font-weight: 600; text-align: center;
+  }
+  a.btn.secondary { background: #ebe4da; color: #2a2826; }
+  a.btn small { display: block; font-weight: 400; opacity: .7; margin-top: 4px; font-size: .8rem; }
+  .tip { font-size: .82rem; color: #8a837c; margin-top: 16px; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>CALMO 互動演示</h1>
+    <p>選你要試的入口。資料存在這個瀏覽器裡，重新整理會清空。</p>
+    <a class="btn" href="demo.html">店員點單系統<small>iPad 橫向最佳 · 手機也能用</small></a>
+    <a class="btn secondary" href="mobile.html">顧客會員頁<small>手機直向 · 餘額 / 充值 / 記錄</small></a>
+    <a class="btn secondary" href="preview.html">並排預覽<small>電腦上看 iPad + iPhone 框</small></a>
+    <p class="tip">試用會員電話 <b>66123456</b>。iPhone / iPad 可在 Safari 用「分享 → 加入主畫面」做成 App 圖示。</p>
+  </div>
+</body>
+</html>
